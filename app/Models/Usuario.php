@@ -33,4 +33,13 @@ class Usuario extends Authenticatable
     {
         return $this->contrasena;
     }
+
+    public function cuentasOAuth()
+    {
+        return $this->hasMany(
+            CuentaOAuth::class,
+            'usuario_id'
+        );
+    }
+
 }
