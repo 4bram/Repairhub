@@ -17,12 +17,19 @@ class EquipoController extends Controller
 
     public function categorias()
     {
-        return response()->json(
-            DB::table('categorias_equipos')
-                ->where('activo', true)
-                ->orderBy('nombre')
-                ->get(['id', 'nombre', 'descripcion'])
-        );
+        $campos = config('equipos.campos', []);
+
+        $categorias = DB::table('categorias_equipos')
+            ->where('activo', true)
+            ->orderBy('nombre')
+            ->get(['id', 'nombre', 'descripcion'])
+            ->map(function ($c) use ($campos) {
+                $c->campos = $campos[$c->nombre] ?? [];
+
+                return $c;
+            });
+
+        return response()->json($categorias);
     }
 
     public function index(Request $request)
