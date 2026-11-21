@@ -23,9 +23,39 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $usuario->createToken('api')->plainTextToken,
+            'tipo_token' => 'Bearer',
             'usuario' => $usuario,
         ]);
     }
+    public function registro(Request $request){
+        $datos = $request->validate([
+            'nombre' => ['required','string','max:120'],
+            'correo' => ['required','string','max:200'], 
+            'contrasena' => ['required','string','min:8', 'max:120'],
+            'telefono' => ['nullable','string','max:25'],
+        ]); 
+
+        $correo = strtolower(trim($datos['correo']));
+
+        if (Usuario::whereRaw('lower(correo) = ?', [$correo])->exists()) {
+            return response()->json(['message' => 'Ya existe una cuenta con ese correo'], 409);
+        }
+
+        $usuario = Usuario::create([
+            'nombre' => $datos['nombre'],
+            'correo' => $correo,
+            'contrasena' => $datos['contrasena'],
+            'telefono' => $datos['telefono'] ?? null,
+        ]);
+        $usuario->refresh();
+
+        return response()->json([
+            'token' => $usuario->createToken('api')->plainTextToken,
+            'tipo_token' => 'Bearer',
+            'usuario' => $usuario,
+        ], 201);
+    }
+    
 
     public function logout(Request $request)
     {
