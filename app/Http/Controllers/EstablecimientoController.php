@@ -61,4 +61,27 @@ class EstablecimientoController extends Controller
 
         return response()->json($establecimiento->fresh(), 201);
     }
+        public function show(Request $request)
+    {
+        $m = $request->attributes->get('membresia');
+
+        return response()->json([...$m->establecimiento->toArray(), 'rol' => $m->rol]);
+    }
+
+    public function update(Request $request)
+    {
+        $m = $request->attributes->get('membresia');
+
+        $datos = $request->validate([
+            'nombre' => ['sometimes', 'required', 'string', 'max:150'],
+            'descripcion' => ['nullable', 'string'],
+            'correo' => ['nullable', 'email', 'max:180'],
+            'telefono' => ['nullable', 'string', 'max:25'],
+            'direccion' => ['nullable', 'string'],
+        ]);
+
+        $m->establecimiento->update($datos);
+
+        return response()->json($m->establecimiento->fresh());
+    }
 }

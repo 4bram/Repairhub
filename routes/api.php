@@ -24,4 +24,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::get('/establecimientos', [EstablecimientoController::class, 'index']);
     Route::post('/establecimientos', [EstablecimientoController::class, 'store']);
+
+    Route::prefix('establecimientos/{establecimiento_id}')
+    ->where(['establecimiento_id' => '[0-9]+'])
+    ->group(function () {
+        Route::get('/', [EstablecimientoController::class, 'show'])->middleware('membresia');
+        Route::put('/', [EstablecimientoController::class, 'update'])->middleware('membresia:administrador');
+    });
 });
