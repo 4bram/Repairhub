@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EstablecimientoController;
 use App\Http\Controllers\OAuthController;
+use App\Http\Controllers\EquipoController;
 
 Route::post(
     '/auth/google/exchange',
@@ -31,4 +32,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [EstablecimientoController::class, 'show'])->middleware('membresia');
         Route::put('/', [EstablecimientoController::class, 'update'])->middleware('membresia:administrador');
     });
+
+    Route::get('/categorias-equipos', [EquipoController::class, 'categorias']);
+
+    Route::prefix('establecimientos/{establecimiento_id}')
+        ->where(['establecimiento_id' => '[0-9]+'])
+        ->group(base_path('routes/negocio.php'));
 });
