@@ -5,6 +5,7 @@ use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\TecnicoController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\OrdenController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -29,6 +30,9 @@ Route::middleware('membresia:administrador')->group(function () {
     Route::get('/citas/{cita_id}', [CitaController::class, 'show'])->whereNumber('cita_id');
     Route::post('/citas', [CitaController::class, 'store']);
     Route::put('/citas/{cita_id}', [CitaController::class, 'update'])->whereNumber('cita_id');
+
+    Route::post('/ordenes', [OrdenController::class, 'store']);
+    Route::put('/ordenes/{orden_id}', [OrdenController::class, 'update'])->whereNumber('orden_id');
 });
 
 Route::middleware('membresia:administrador,tecnico')->group(function () {
@@ -39,4 +43,9 @@ Route::middleware('membresia:administrador,tecnico')->group(function () {
     Route::get('/equipos/{equipo_id}', [EquipoController::class, 'show'])->whereNumber('equipo_id');
 
     Route::get('/servicios', [ServicioController::class, 'index']);
+    Route::get('/ordenes', [OrdenController::class, 'index']);
+    Route::get('/ordenes/{orden_id}', [OrdenController::class, 'show'])->whereNumber('orden_id');
+    Route::post('/ordenes/{orden_id}/estado', [OrdenController::class, 'cambiarEstado'])->whereNumber('orden_id');
+    Route::post('/ordenes/{orden_id}/notas', [OrdenController::class, 'nota'])->whereNumber('orden_id');
+    Route::post('/ordenes/{orden_id}/diagnosticos', [OrdenController::class, 'diagnostico'])->whereNumber('orden_id');
 });
