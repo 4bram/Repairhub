@@ -47,3 +47,5 @@ Route::middleware('auth:sanctum')->group(function () {
         ->where(['establecimiento_id' => '[0-9]+'])
         ->group(base_path('routes/negocio.php'));
 });
+// Portal del cliente
+require __DIR__ . '/portal.php';

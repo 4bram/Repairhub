@@ -40,4 +40,44 @@ class Orden extends Model
     {
         return $this->hasMany(Evidencia::class, 'orden_id');
     }
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id');
+    }
+
+    public function equipo()
+    {
+        return $this->belongsTo(Equipo::class, 'equipo_id');
+    }
+
+    public function establecimiento()
+    {
+        return $this->belongsTo(
+            Establecimiento::class,
+            'establecimiento_id'
+        );
+    }
+
+    public function seguimientosVisibles()
+    {
+        return $this->hasMany(Seguimiento::class, 'orden_id')
+            ->where('visible_cliente', true);
+    }
+
+    public function evidenciasVisibles()
+    {
+        return $this->hasMany(Evidencia::class, 'orden_id')
+            ->where('visible_cliente', true)
+            ->where(function ($query) {
+                $query->whereNull('seguimiento_id')
+                    ->orWhereHas('seguimiento', function ($seguimiento) {
+                        $seguimiento->where('visible_cliente', true)
+                            ->whereColumn(
+                                'seguimientos.orden_id',
+                                'evidencias.orden_id'
+                            );
+                    });
+            });
+    }
 }
