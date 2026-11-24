@@ -35,4 +35,9 @@ class Orden extends Model
     {
         return $this->hasMany(Diagnostico::class, 'orden_id');
     }
+
+    public function evidencias()
+    {
+        return $this->hasMany(Evidencia::class, 'orden_id');
+    }
 }
