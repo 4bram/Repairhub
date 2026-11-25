@@ -42,4 +42,9 @@ class Usuario extends Authenticatable
         );
     }
 
+    public function clientes()
+    {
+        return $this->hasMany(Cliente::class, 'usuario_id');
+    }
+
 }

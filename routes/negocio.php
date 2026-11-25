@@ -7,7 +7,7 @@ use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\OrdenController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\EvidenciaController;
 
 Route::middleware('membresia:administrador')->group(function () {
     Route::get('/tecnicos', [TecnicoController::class, 'index']);
@@ -33,6 +33,11 @@ Route::middleware('membresia:administrador')->group(function () {
 
     Route::post('/ordenes', [OrdenController::class, 'store']);
     Route::put('/ordenes/{orden_id}', [OrdenController::class, 'update'])->whereNumber('orden_id');
+
+    Route::delete(
+        '/ordenes/{orden_id}/evidencias/{evidencia_id}',
+        [EvidenciaController::class, 'destroy']
+    )->whereNumber(['orden_id', 'evidencia_id']);
 });
 
 Route::middleware('membresia:administrador,tecnico')->group(function () {
@@ -48,4 +53,27 @@ Route::middleware('membresia:administrador,tecnico')->group(function () {
     Route::post('/ordenes/{orden_id}/estado', [OrdenController::class, 'cambiarEstado'])->whereNumber('orden_id');
     Route::post('/ordenes/{orden_id}/notas', [OrdenController::class, 'nota'])->whereNumber('orden_id');
     Route::post('/ordenes/{orden_id}/diagnosticos', [OrdenController::class, 'diagnostico'])->whereNumber('orden_id');
+    
+    // Evidencias de las órdenes
+
+    Route::get(
+        '/ordenes/{orden_id}/evidencias',
+        [EvidenciaController::class, 'index']
+    )->whereNumber('orden_id');
+
+    Route::post(
+        '/ordenes/{orden_id}/evidencias',
+        [EvidenciaController::class, 'store']
+    )->whereNumber('orden_id');
+
+    Route::get(
+        '/ordenes/{orden_id}/evidencias/{evidencia_id}/archivo',
+        [EvidenciaController::class, 'archivo']
+    )->whereNumber(['orden_id', 'evidencia_id']);
+
+    Route::patch(
+        '/ordenes/{orden_id}/evidencias/{evidencia_id}',
+        [EvidenciaController::class, 'update']
+    )->whereNumber(['orden_id', 'evidencia_id']);
+
 });

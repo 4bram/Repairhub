@@ -17,4 +17,14 @@ class Seguimiento extends Model
     {
         return ['visible_cliente' => 'boolean'];
     }
+
+    public function evidencias()
+    {
+        return $this->hasMany(Evidencia::class, 'seguimiento_id');
+    }
+
+    public function orden()
+    {
+        return $this->belongsTo(Orden::class, 'orden_id');
+    }
 }
