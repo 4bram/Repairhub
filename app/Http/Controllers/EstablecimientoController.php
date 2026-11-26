@@ -78,6 +78,7 @@ class EstablecimientoController extends Controller
             'correo' => ['nullable', 'email', 'max:180'],
             'telefono' => ['nullable', 'string', 'max:25'],
             'direccion' => ['nullable', 'string'],
+            'horario_atencion' =>['nullable', 'array'],
         ]);
 
         $m->establecimiento->update($datos);
