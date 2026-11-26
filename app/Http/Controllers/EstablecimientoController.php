@@ -79,9 +79,6 @@ class EstablecimientoController extends Controller
             'telefono' => ['nullable', 'string', 'max:25'],
             'direccion' => ['nullable', 'string'],
             'horario_atencion' => ['sometimes', 'nullable', 'array'],
-            'horario_atencion.*' => ['nullable', 'array'],
-            'horario_atencion.*.abre' => ['nullable', 'date_format:H:i'],
-            'horario_atencion.*.cierra' => ['nullable', 'date_format:H:i'],
         ]);
 
         if (array_key_exists('horario_atencion', $datos)) {
