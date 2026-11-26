@@ -21,6 +21,10 @@ Route::get('/ping', fn () => response()->json(['ok' => true]));
 
 Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 Route::post('/registro', [AuthController::class, 'registro'])->middleware('throttle:5,1');
+Route::get(
+    '/public/establecimientos',
+    [PublicoController::class, 'establecimientos']
+);
 Route::prefix('publico/{slug}')
     ->where(['slug' => '[a-z0-9]+(-[a-z0-9]+)*'])
     ->group(function () {
