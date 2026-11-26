@@ -15,14 +15,13 @@ class Establecimiento extends Model
     const UPDATED_AT = 'actualizado_en';
     const DELETED_AT = 'eliminado_en';
 
-    protected $fillable = ['nombre', 'slug', 'descripcion', 'correo', 'telefono', 'direccion', 'horarios', 'horario_atencion'];
+    protected $fillable = ['nombre', 'slug', 'descripcion', 'correo', 'telefono', 'direccion', 'horario_atencion'];
 
     protected function casts(): array
     {
         return [
             'activo' => 'boolean',
             'horario_atencion' => 'object',
-            'horarios' => 'array',
         ];
     }
 }
