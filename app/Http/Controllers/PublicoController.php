@@ -97,4 +97,29 @@ class PublicoController extends Controller
             ],
         ], 201);
     }
+
+    public function establecimientos()
+    {
+        $establecimientos = \App\Models\Establecimiento::where('activo', true)
+            ->get()
+            ->map(function ($est) {
+                $servicios = \App\Models\Servicio::where('establecimiento_id', $est->id)
+                    ->where('activo', true)
+                    ->pluck('nombre');
+
+                return [
+                    'id' => $est->id,
+                    'nombre' => $est->nombre,
+                    'slug' => $est->slug,
+                    'descripcion' => $est->descripcion,
+                    'telefono' => $est->telefono,
+                    'correo' => $est->correo,
+                    'direccion' => $est->direccion,
+                    'activo' => $est->activo,
+                    'servicios' => $servicios,
+                ];
+            });
+
+        return response()->json($establecimientos);
+    }
 }
